@@ -1,0 +1,49 @@
+{% if section.settings.show_announcement == true %}
+  {%- for block in section.blocks -%}
+    <div class="bg-primary" {{ block.shopify_attributes }}>
+      <a href="{{ block.settings.link }}" class="">
+        <div class="page-width">
+          <p class="flex justify-center font-medium p-0.5">
+            {{ block.settings.title }}
+          </p>
+        </div>
+      </a>
+    </div>
+  {%- endfor -%}
+{% endif %}
+
+{% schema %}
+{
+  "name": "t:sections.announcement-bar.name",
+  "max_blocks": 12,
+  "settings":[
+    {
+      "type": "checkbox",
+      "id": "show_announcement",
+      "label": "Show announcement",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "announcement",
+      "name": "t:sections.announcement-bar.blocks.announcement.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "default": "Title",
+          "label": "Title"
+        }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      {
+        "type": "announcement"
+      }
+    ]
+  }
+}
+{% endschema %}

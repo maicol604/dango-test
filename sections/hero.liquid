@@ -1,0 +1,125 @@
+<div style="position:relative">
+    <!-- Slider main container -->
+    <div class="swiper">
+        <!-- Additional required wrapper -->
+        <div class="swiper-wrapper">
+            <!-- Slides -->
+            {%- for block in section.blocks -%}
+                <div class="swiper-slide flex justify-between items-center px-28 py-5">
+                    <div class="carousel-item-content pr-24">
+                        <h2 class="text-carousel color-primary">{{ block.settings.title | escape }}</h2>
+                        <p class="color-primary text-xs">{{ block.settings.description | escape }}</p>
+                        <div class="buttons-container mt-5 grid gap-4">
+                            {% render 'button', text: block.settings.primary_button_text, link:block.settings.primary_button_link, variant:"primary" %}
+                            <span class="slide-secondary-button">{% render 'button', text: block.settings.secondary_button_text, link:block.settings.secondary_button_link %}</span>
+                            <a class="slide-link" href="{{ block.settings.secondary_button_link }}">{{ block.settings.secondary_button_text }}</a>
+                        </div>
+                        {% comment %} <div class="grid gap-2">
+                            <div class="swiper-button-prev-custom" id="prev">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
+                                </svg>
+                            </div>
+                            <div class="swiper-button-next-custom" id="next">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+                                </svg>
+                            </div>
+                        </div> {% endcomment %}
+                    </div>
+                    <div class="w-5/12 rounded-lg img-carousel overflow-hidden max-h-full">
+                        {% if block.settings.item_image != blank %}
+                            {{ block.settings.item_image | image_url | img_tag }}
+                        {% endif %}
+                    </div>
+                </div>
+            {%- endfor -%}
+        </div>
+    </div>  
+    <div class="grid gap-2 navigation-container mx-28">
+        <div class="swiper-button-prev-custom" id="prev">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
+            </svg>
+        </div>
+        <div class="swiper-button-next-custom" id="next">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+            </svg>
+        </div>
+    </div>
+</div>
+{% javascript %}
+    window.addEventListener('load', function() {
+
+        const swiper = new Swiper('.swiper', {
+            direction: "horizontal",
+            loop: true,
+        });
+
+        document.getElementById("next").onclick = function(){
+            swiper.slideNext();
+        }
+
+        document.getElementById("prev").onclick = function(){
+            swiper.slidePrev();
+        }
+    });
+{% endjavascript %}
+
+{% schema %}
+{
+    "name": "Hero",
+    "settings":[
+    ],
+    "blocks":[
+        {
+            "name": "Item",
+            "type": "item",
+            "settings":[
+                {
+                  "type": "text",
+                  "id": "title",
+                  "default": "Title",
+                  "label": "Title"
+                },
+                {
+                  "type": "text",
+                  "id": "description",
+                  "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                  "label": "Description"
+                },
+                {
+                    "type": "image_picker",
+                    "id": "item_image",
+                    "label": "Image"
+                },
+                {
+                  "type": "text",
+                  "id": "primary_button_text",
+                  "default": "Button text",
+                  "label": "Primary button text"
+                },
+                {
+                  "type": "text",
+                  "id": "primary_button_link",
+                  "default": "#",
+                  "label": "Primary button link"
+                },
+                {
+                  "type": "text",
+                  "id": "secondary_button_text",
+                  "default": "Button text",
+                  "label": "Secondary button text"
+                },
+                {
+                  "type": "text",
+                  "id": "secondary_button_link",
+                  "default": "#",
+                  "label": "Secondary button link"
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}

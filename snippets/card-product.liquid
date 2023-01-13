@@ -1,0 +1,16 @@
+{%- if card_product and card_product != empty -%}
+  <div class="w-full flex flex-col items-center">
+    <div class="w-full flex items-center justify-center overflow-hidden square bg-cover" style="background-image: url({{ card_product.featured_media | image_url }})">
+    </div>
+    <h3 class="p-3 font-bold color-primary">
+      <a
+        href="{{ card_product.url }}"
+        id="StandardCardNoMediaLink-{{ section_id }}-{{ card_product.id }}"
+        class="full-unstyled-link"
+        aria-labelledby="StandardCardNoMediaLink-{{ section_id }}-{{ card_product.id }} NoMediaStandardBadge-{{ section_id }}-{{ card_product.id }}"
+      >
+        {{ card_product.title | escape }}
+      </a>
+    </h3>
+  </div>
+{%- endif -%}

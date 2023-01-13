@@ -1,0 +1,107 @@
+<h2 class="flex justify-center items-center w-full color-primary font-black text-3xl mb-5 collection-subtitle"><span class="opacity-50 mr-1">I Need Help</span>choosing a color</h2>
+
+<div class="relative mx-28 flex flex-col items-center justify-center collections-container" x-data="{tab: {{ collections.first.id }}}">
+
+  <div class="flex justify-center border-2 rounded-lg border-primary w-fit mb-5 collections-list">
+    {% for collection in collections %}
+      <a class="p-1.5 px-4 rounded-lg color-primary m-1 collections-list-item uppercase" :class="{'bg-primary': tab === {{ collection.id }}, '': tab !== {{ collection.id }}}" href="#" @click.prevent="tab = {{ collection.id }}">{{ collection.title }}</a>
+    {% endfor %}
+  </div>
+
+  <h4 class="opacity-50 mb-5 color-primary font-bold">I’m Not Sure...</h4>
+  <span class="collections-tab-wrapper w-full">
+    {% for collection in collections %}
+      <div class="grid gap-2 grid-cols-5 w-full" x-show="tab === {{ collection.id }}">
+        {% for item in collection.products %}
+            {% if forloop.index <= 5 %}
+              <div class="flex flex-col items-center w-1/5">
+                <div class="w-full flex items-center justify-center overflow-hidden square bg-cover" style="background-image: url({{ item.featured_media | image_url }})">
+                </div>
+                {% if item.metafields.custom.most_popular %}
+                  <div class="p-1 px-5 rounded-lg bg-primary text-xs font-normal mt-4">MOST POPULAR</div>
+                  {% else %}
+                    <div class="p-1 px-5 rounded-lg bg-primary text-xs font-normal mt-4 opacity-0">MOST POPULAR</div>
+                {% endif %}
+                <h3 class="p-3 font-bold color-primary">
+                  <a
+                    href="{{ item.url }}"
+                    id="StandardCardNoMediaLink-{{ section_id }}-{{ item.id }}"
+                    class="full-unstyled-link font-black text-xl"
+                    aria-labelledby="StandardCardNoMediaLink-{{ section_id }}-{{ item.id }} NoMediaStandardBadge-{{ section_id }}-{{ item.id }}"
+                  >
+                    {{ item.title | escape }}
+                  </a>
+                </h3>
+              </div>
+            {% endif %}
+        {% endfor %}
+      </div>
+    {% endfor %}
+  </span>
+  
+  <div class="w-full px-7 collections-tabs-carousel mb-28 overflow-hidden">
+
+    {% for collection in collections %}
+      <div class="swiper-{{collection.id}}" style="width: 70vw;" x-show="tab === {{ collection.id }}">
+        <!-- Additional required wrapper -->
+        <div class="swiper-wrapper">
+  
+          {% for item in collection.products %}
+  
+              {% if forloop.index <= 5 %}
+  
+                <div class="flex flex-col items-center swiper-slide" style="width: 60vw; margin-right: 1rem;">
+                  <h3 class="p-3 font-bold color-primary">
+                    <a
+                      href="{{ item.url }}"
+                      id="StandardCardNoMediaLink-{{ section_id }}-{{ item.id }}"
+                      class="full-unstyled-link font-black text-xl text-center"
+                      aria-labelledby="StandardCardNoMediaLink-{{ section_id }}-{{ item.id }} NoMediaStandardBadge-{{ section_id }}-{{ item.id }}"
+                    >
+                      {{ item.title | escape }}
+                    </a>
+                  </h3>
+                  {% if item.metafields.custom.most_popular %}
+                    <div class="p-1 px-5 rounded-lg bg-primary text-xs font-normal mt-4">MOST POPULAR</div>
+                    {% else %}
+                      <div class="p-1 px-5 rounded-lg bg-primary text-xs font-normal mt-4 opacity-0">MOST POPULAR</div>
+                  {% endif %}
+                  <div class="w-full flex items-center justify-center overflow-hidden square bg-cover" style="background-image: url({{ item.featured_media | image_url }})">
+                  </div>
+                </div>
+  
+              {% endif %}
+  
+          {% endfor %}
+  
+        </div>
+        <!-- If we need pagination -->
+        <div class="swiper-pagination-{{collection.id}} swipper-pagination-collections"></div>
+      </div>
+      <script>
+        window.addEventListener('load', function() {
+  
+            const swiper = new Swiper('.swiper-{{collection.id}}', {
+                direction: "horizontal",
+                // If we need pagination
+                pagination: {
+                  el: '.swiper-pagination-{{collection.id}}',
+                },
+  
+            });
+  
+            document.getElementById("next").onclick = function(){
+                swiper.slideNext();
+            }
+  
+            document.getElementById("prev").onclick = function(){
+                swiper.slidePrev();
+            }
+        });
+      </script>
+    {% endfor %}
+    
+  </div>
+
+</div>
+
